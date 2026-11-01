@@ -1,8 +1,10 @@
-from importlib.metadata import distributions
-from loguru import logger
-import requests
 import json
-from datetime import datetime
+from datetime import datetime, timezone
+from importlib.metadata import distributions
+
+import requests
+from loguru import logger
+
 
 def get_installed_inventory():
     """
@@ -68,7 +70,7 @@ def run_audit(inventory):
         # Report data and save to a JSON file
         report_data = {
             # Timestamp of when security snapshot was taken.
-            "audit_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "audit_date": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),
             "total_packages": len(inventory),
             "vulnerabilities_found": vulnerabilities_found,
             "packages": inventory

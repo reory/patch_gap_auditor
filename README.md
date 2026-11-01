@@ -11,56 +11,131 @@ The Patch-Gap Auditor is a Software Composition Analysis (SCA) tool. It performs
 
 ---
 
-## 🧠 Why It's Used
-- Supply Chain Security: 
-Hackers increasingly target third-party libraries (like
-requests or urllib3 ) rather than the main application code.
-- Audit Readiness: 
-Generates automated JSON reports required for
-compliance in regulated industries (Finance, Health, Defense).
-- Continuous Monitoring: 
-Bridges the gap between "it worked yesterday" and
-"it's vulnerable today" due to a new Zero-Day discovery.
+## 📑 Table of Contents
+
+- [Why This Project Exists](#-why-this-project-exists)
+- [Key Features](#-key-features)
+- [Installation & Setup](#️-installation--setup)
+- [Usage](#-usage)
+- [Project Structure](#-project-structure)
+- [Tech Stack](#-tech-stack)
+- [Challenges & Solutions](#-challenges--solutions)
+- [Roadmap Features](#️-roadmap)
 
 ---
 
-# ⚒️ How to Run
-- Prerequisites
+## 🎯 Why This Project Exists
+
+Modern applications often depend on dozens or even hundreds of third-party packages.
+
+Whilst these dependencies accelerate development, they can also introduce known vulnerabilities into a system without developers being aware.
+
+Patch Gap Auditor was created to provide a lightweight Software Composition Analysis (SCA) solution capable of auditing a live Python environment against Google's Open Source Vulnerabilities (OSV) database and producing actionable security reports.
+
+---
+
+## ✨ Key Features
+
+- Automatic package inventory discovery
+- Runtime environment inspection
+- Google OSV integration
+- Batch vulnerability lookups
+- JSON audit report generation
+- Security compliance support
+- Software supply chain analysis
+- Dependency vulnerability detection
+
+---
+
+## 🛠️ Installation & Setup
+
+### Create Virtual Environment
+
 ```bash
-pip install requests loguru
+python -m venv venv
 ```
+
+### Activate Environment
+
+#### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+#### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🚀 Usage
+
+Run the auditor:
+
 - Execution
 ```bash
 python patch_gap_auditor.py
 ```
-- The script will automatically scan your venv , query the Google OSV database
-via batch request, and output a security_audit.json file.
+The tool will:
+
+- Discover installed packages.
+- Collect package version metadata.
+- Query the OSV database.
+- Match vulnerabilities against installed components.
+- Generate a structured audit report.
+- Export findings to security_audit.json.
 
 ---
 
-# 📁 Project Structure
+## 📁 Project Structure
 ```
 patch_gap_auditor/
 ├── venv/ 
-├── patch_gap_auditor.py # Main logic (Harvester, Negotiator, Reporter)
-├── security_audit.json # Generated audit artifact (Snapshot)
-└── README.md # Project documentation
+├── patch_gap_auditor.py   # Main logic (Harvester, Negotiator, Reporter)
+├── security_audit.json    # Generated audit artefact (Snapshot)
+└── README.md              # Project documentation
 ```
 
 ---
 
-# 👨🏽‍💻 Challenges & Solutions
+## 👨🏽‍💻 Tech Stack
 
-## API Performance: 
+### Python 
+- Core application and security tooling. 
+### Requests 
+- Handles communication with Google's OSV API. 
+### Loguru 
+- Structured logging and diagnostic output. 
+### OSV API 
+- Provides vulnerability intelligence for open-source packages. 
+### JSON 
+- Used for report generation and audit artefacts.
+
+---
+
+## 👨🏽‍💻 Challenges & Solutions
+
+### API Performance: 
 - Individual package queries were slow.
 - Solution: Implemented the querybatch endpoint to audit all packages in a
 single network round-trip.
-## Environment Awareness: 
+
+### Environment Awareness:
 - Scanning static files (requirements.txt) often
 misses sub-dependencies.
 - Solution: Used importlib.metadata to query the live runtime
 environment.
-## Data Integrity: 
+
+### Data Integrity: 
 - Matching API responses to local packages.
 - Solution: Leveraged the zip() function to ensure 1-to-1 mapping between
 queries and results.
@@ -68,15 +143,15 @@ queries and results.
 
 ---
 
-# 🛣️ Roadmap Features
+## 🛣️ Roadmap Features
 
-- [ ] Auto-Remediation: Add a --fix flag to automatically run pip install
---upgrade on vulnerable packages.
-- [ ] Slack/Discord Integration: Send real-time alerts to dev channels when a
-"Critical" vulnerability is detected.
-- [ ] Historical Analysis: Compare the current audit against previous JSON
-snapshots to track security improvements.
-- [ ] HTML Dashboard: Visualizing the audit results in a browser-based pie chart.
+- [ ] Historical analysis and snapshot comparison
+- [ ] HTML dashboard visualisations
+- [ ] Slack and Discord notifications
+- [ ] CVSS severity filtering
+- [ ] CSV export support
+- [ ] GitHub Actions integration
+- [ ] pyproject.toml auditing
 
 ---
 
